@@ -2,12 +2,11 @@ import re
 import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import make_pipeline
 import random
 
-# Expanded dataset
 data = {
     'text': [
         'I feel happy', 'This is so sad', 'I am angry', 'Feeling scared', 'Surprised by the news', 'Disgusted by the behavior',
@@ -17,10 +16,14 @@ data = {
         'Worried about the health issue', 'Curious to learn new things', 'Nostalgic about the past', 'Hopeful for a positive outcome',
         'Cautious about the decision', 'Inspired by the creative work', 'Sympathetic towards others', 'Amused by the funny incident',
         'Determined to achieve the goal', 'Lonely and seeking companionship', 'Optimistic despite challenges', 'Skeptical about the plan',
-        # Additional data for variety and coverage
         'Feeling fantastic today', 'Feeling down and out', 'Angry at the injustice', 'Thrilled about the opportunity',
         'Feeling blue', 'Eager to start a new project', 'Annoyed by the constant interruptions', 'Feeling on top of the world',
-        'Indifferent about the situation', 'Excited to meet new people'
+        'Indifferent about the situation', 'Excited to meet new people',
+        'Feeling awesome today', 'Feeling overwhelmed with joy', 'Tired but content', 'Impatiently waiting for something exciting',
+        'Amazed by the unexpected', 'Reflecting on past achievements', 'Energetic and ready for action', 'Grumpy and in need of a break',
+        'Satisfied with a job well done', 'Curious about the mysteries of the universe',
+        'Overwhelmed with joy', 'Feeling on top of the world', 'Anxious about the unknown', 'Curious about the world', 'Sad but hopeful',
+        'Excited and curious', 'Feeling content and curious', 'Angry and frustrated', 'Joyful despite challenges', 'Curious about the future','I am gay'
     ],
     'emotion': [
         'joy', 'sadness', 'anger', 'fear', 'surprise', 'disgust',
@@ -28,17 +31,33 @@ data = {
         'overwhelmed', 'awe', 'boredom', 'gratitude', 'confusion', 'pride', 'enthusiasm',
         'worry', 'curiosity', 'nostalgia', 'hope', 'caution', 'inspiration', 'sympathy', 'amusement',
         'determination', 'loneliness', 'optimism', 'skepticism',
-        'joy', 'sadness', 'anger', 'joy', 'sadness', 'joy', 'anger', 'joy', 'neutral', 'joy'
+        'joy', 'sadness', 'anger', 'joy', 'sadness', 'joy', 'anger', 'joy', 'neutral', 'joy',
+        'joy', 'joy', 'contentment', 'joy', 'surprise', 'contentment', 'anger', 'joy', 'neutral', 'curiosity',
+        'joy', 'curiosity', 'anxiety', 'curiosity', 'sadness', 'joy', 'contentment', 'anger', 'joy', 'curiosity','sadness'
     ]
 }
 
+greetings = [
+    'Hello', 'Hi', 'Hey', 'Greetings', 'Good morning', 'Good afternoon', 'Good evening'
+]
+
+farewells = [
+    'Goodbye', 'Bye', 'Farewell', 'See you later', 'Take care', 'Adios'
+]
+
 df = pd.DataFrame(data)
 
-# Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(df['text'], df['emotion'], random_state=42)
+# Add greetings and farewells to the training data
+greeting_data = [{'text': f'{g} how are you feeling?', 'emotion': 'neutral'} for g in greetings]
+farewell_data = [{'text': f'{f}, it was nice chatting with you!', 'emotion': 'neutral'} for f in farewells]
 
-# Create a pipeline with a CountVectorizer and Multinomial Naive Bayes classifier
-model = make_pipeline(CountVectorizer(), MultinomialNB())
+df = pd.concat([df, pd.DataFrame(greeting_data + farewell_data)], ignore_index=True)
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(df['text'], df['emotion'], test_size=0.2, random_state=42)
+
+# Create a pipeline with a TfidfVectorizer and Random Forest classifier
+model = make_pipeline(TfidfVectorizer(), RandomForestClassifier(n_estimators=100, random_state=42))
 
 # Train the model
 model.fit(X_train, y_train)
@@ -64,6 +83,14 @@ def check_patterns(user_input, patterns):
     return None
 
 def chatbot_response(user_input, responses):
+    # Check for greetings
+    if any(greeting in user_input.lower() for greeting in greetings):
+        return "Hello! How can I assist you today?"
+
+    # Check for farewells
+    if any(farewell in user_input.lower() for farewell in farewells):
+        return "Goodbye! Have a great day!"
+
     # Check for specific patterns
     pattern_response = check_patterns(user_input, responses['patterns'])
     if pattern_response:
@@ -80,8 +107,22 @@ def chatbot_response(user_input, responses):
     else:
         return "I'm not sure how to respond to that. Can you provide more details?"
 
-# Example of using the functions
+test_predictions = model.predict(X_test)
+accuracy = (test_predictions == y_test).mean()
+print(f'Model Accuracy on Test Set: {accuracy:.2%}')
+
 responses = load_responses()
-user_input = input("How are you feeling today? ")
-response = chatbot_response(user_input, responses)
-print(response)
+
+# Start the conversation
+print("Bot: Hello! How can I assist you today?")
+
+# Simulate a conversation
+while True:
+    user_input = input("You: ")
+    response = chatbot_response(user_input, responses)
+    print(f"Bot: {response}")
+
+    # Check for farewell to end the conversation
+    if any(farewell in user_input.lower() for farewell in farewells):
+        print("Bot: Goodbye! Have a great day!")
+        break

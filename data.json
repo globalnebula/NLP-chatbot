@@ -59,6 +59,18 @@
     "We all have moments of neutrality. How can I make your day a bit more interesting?",
     "Embracing the neutral vibes today. What's your preferred way to unwind?"
   ],
+  "curiosity": [
+    "I love curiosity! What are you curious about today?",
+    "Curiosity is the spark of learning. What topic has piqued your interest?",
+    "Ask away! I'm here to satisfy your curiosity.",
+    "Curious minds make the world go round. What would you like to explore?",
+    "The quest for knowledge is exciting! What burning questions do you have?",
+    "Fueling curiosity leads to discovery. What mysteries are you eager to unravel?",
+    "Embrace your curiosity! What fascinating things are on your mind?",
+    "Curiosity is the key to continuous growth. What's capturing your attention right now?",
+    "In the realm of curiosity, every question is an adventure. What shall we discover today?",
+    "Curiosity is contagious! What's inspiring your inquisitive nature?"
+  ],
   "patterns": {
     "\\b(?:how\\sare\\syou|what's\\sup)\\b": "I'm here to assist you. How can I help?",
     "\\b(?:thank\\syou|thanks|appreciate)\\b": "You're welcome! If you need anything else, feel free to ask.",
@@ -76,6 +88,13 @@
     "\\b(?:compliment\\sme|say\\snice\\sthings)\\b": "You're amazing just the way you are! Anything specific you'd like to talk about?",
     "\\b(?:weekend\\splans|upcoming\\sevents)\\b": "Any exciting plans for the weekend or upcoming events? I'd love to hear about them!",
     "\\b(?:book\\srecommendation|favorite\\sbook)\\b": "I don't have personal favorites, but I can recommend books based on your interests! What genres do you enjoy?",
-    "\\b(?:tell\\sme\\sabout\\syourself)\\b": "I'm just a friendly chatbot here to assist you! Is there something specific you'd like to know or talk about?"
+    "\\b(?:tell\\sme\\sabout\\syourself)\\b": "I'm just a friendly chatbot here to assist you! Is there something specific you'd like to know or talk about?",
+    "\\b(?:how\\sdo\\sI\\s(?:overcome|deal\\swith)\\sstress)\\b": "Dealing with stress is important. Taking breaks, talking to friends, and practicing mindfulness can help.",
+    "\\b(?:what\\sis\\sthe\\smeaning\\sof\\slife)\\b": "The meaning of life is a subjective question. What does it mean to you?",
+    "\\b(?:what\\s\\w+\\smovie\\sshould\\sI\\swatch)\\b": "I can recommend movies based on your preferences. What genre are you in the mood for?",
+    "\\b(?:how\\s\\w+\\sI\\s\\w+\\smy\\s\\w+)\\b": "I can provide guidance. What specific [subject] are you looking to [action]?",
+    "\\b(?:where\\scan\\s\\w+\\s\\w+)\\b": "I can help you find [place]. What [place] are you looking for?",
+    "\\b(?:can\\s\\w+\\s\\w+\\s\\w+\\s\\w+\\sme)\\b": "I can certainly [action]. What [action] are you looking to [action]?",
+    "\\b(?:tell\\sme\\sabout\\s\\w+)\\b": "I'd be happy to share information about [topic]. What specific details are you interested in?"
   }
 }
