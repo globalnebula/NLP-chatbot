@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import make_pipeline
 import random
+from googlesearch import search
 
 data = {
     'text': [
@@ -78,6 +79,16 @@ def check_patterns(user_input, patterns):
     for pattern, response in patterns.items():
         if re.search(pattern, user_input, re.IGNORECASE):
             return response
+
+    # Check for search queries
+    if 'search about' in user_input.lower():
+        query = re.sub(r'search about\s+', '', user_input, flags=re.IGNORECASE)
+        search_results = search(query, num_results=1)
+        try:
+            first_result = next(search_results)
+            return f"Here's what I found: {first_result}"
+        except StopIteration:
+            return "I couldn't find relevant information for that query."
 
     # No specific pattern found
     return None
