@@ -46,34 +46,20 @@ farewells = [
     'Goodbye', 'Bye', 'Farewell', 'See you later', 'Take care', 'Adios'
 ]
 
-df = pd.DataFrame(data)
-
-# Add greetings and farewells to the training data
-greeting_data = [{'text': f'{g} how are you feeling?', 'emotion': 'neutral'} for g in greetings]
-farewell_data = [{'text': f'{f}, it was nice chatting with you!', 'emotion': 'neutral'} for f in farewells]
-
-df = pd.concat([df, pd.DataFrame(greeting_data + farewell_data)], ignore_index=True)
-
-# Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(df['text'], df['emotion'], test_size=0.2, random_state=42)
-
-# Create a pipeline with a TfidfVectorizer and Random Forest classifier
-model = make_pipeline(TfidfVectorizer(), RandomForestClassifier(n_estimators=100, random_state=42))
-
-# Train the model
-model.fit(X_train, y_train)
-
-def classify_tone(text):
+def classify_tone(text, model, vectorizer):
+    # Transform text using the vectorizer
+    text_vectorized = vectorizer.transform([text])
+    
     # Predict the emotion using the trained model
-    emotion = model.predict([text])[0]
+    emotion = model.predict(text_vectorized)[0]
     return emotion
+
 
 def load_responses():
     # Load response templates from a JSON file
     with open('data.json', 'r', encoding="utf-8") as file:
         responses = json.load(file)
     return responses
-
 def check_patterns(user_input, patterns):
     # Check for patterns in the user input
     for pattern, response in patterns.items():
@@ -93,7 +79,7 @@ def check_patterns(user_input, patterns):
     # No specific pattern found
     return None
 
-def chatbot_response(user_input, responses):
+def chatbot_response(user_input, responses, model, vectorizer):
     # Check for greetings
     if any(greeting in user_input.lower() for greeting in greetings):
         return "Hello! How can I assist you today?"
@@ -102,38 +88,54 @@ def chatbot_response(user_input, responses):
     if any(farewell in user_input.lower() for farewell in farewells):
         return "Goodbye! Have a great day!"
 
-    # Check for specific patterns
-    pattern_response = check_patterns(user_input, responses['patterns'])
-    if pattern_response:
-        return pattern_response
+    # Transform the user input using the vectorizer
+    user_input_vectorized = vectorizer.transform([user_input])
 
-    # Proceed with mood-based response
-    tone = classify_tone(user_input)
+    # Predict the emotion using the trained model
+    emotion = model.predict(user_input_vectorized)[0]
 
-    if tone in responses:
+    if emotion in responses:
         # Randomly select one response for the predicted emotion
-        emotion_responses = responses[tone]
+        emotion_responses = responses[emotion]
         selected_response = random.choice(emotion_responses)
         return selected_response
     else:
         return "I'm not sure how to respond to that. Can you provide more details?"
 
-test_predictions = model.predict(X_test)
-accuracy = (test_predictions == y_test).mean()
-print(f'Model Accuracy on Test Set: {accuracy:.2%}')
 
-responses = load_responses()
+def start_conversation(responses, model, vectorizer):
+    print("Bot: Hello! How can I assist you today?")
+    while True:
+        user_input = input("You: ")
 
-# Start the conversation
-print("Bot: Hello! How can I assist you today?")
+        # Check for farewell to end the conversation
+        if any(farewell in user_input.lower() for farewell in farewells):
+            print("Bot: Goodbye! Have a great day!")
+            break
 
-# Simulate a conversation
-while True:
-    user_input = input("You: ")
-    response = chatbot_response(user_input, responses)
-    print(f"Bot: {response}")
+        response = chatbot_response(user_input, responses, model, vectorizer)
+        print(f"Bot: {response}")
 
-    # Check for farewell to end the conversation
-    if any(farewell in user_input.lower() for farewell in farewells):
-        print("Bot: Goodbye! Have a great day!")
-        break
+
+def main():
+    # Data processing and model training
+    df = pd.DataFrame(data)
+
+    greeting_data = [{'text': f'{g} how are you feeling?', 'emotion': 'neutral'} for g in greetings]
+    farewell_data = [{'text': f'{f}, it was nice chatting with you!', 'emotion': 'neutral'} for f in farewells]
+    df = pd.concat([df, pd.DataFrame(greeting_data + farewell_data)], ignore_index=True)
+
+    X_train, X_test, y_train, y_test = train_test_split(df['text'], df['emotion'], test_size=0.2, random_state=42)
+
+    vectorizer = TfidfVectorizer()
+    X_train_vectors = vectorizer.fit_transform(X_train)
+    
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train_vectors, y_train)
+
+    responses = load_responses()
+    start_conversation(responses, model, vectorizer)
+
+if __name__ == "__main__":
+    main()
+
