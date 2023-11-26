@@ -77,7 +77,7 @@
     "\\b(?:tell\\sme\\sajoke|joke)\\b": "Sure, here's a joke for you: [insert joke]",
     "\\b(?:tell\\sme\\sastory|story)\\b": "Once upon a time... What kind of story are you in the mood for?",
     "\\b(?:how\\sto\\srelax|relaxation\\stips)\\b": "Relaxation is important! Try taking deep breaths or listening to calming music.",
-    "\\b(?:what\\sdo\\syou\\sthink|your\\sopinion)\\b": "I'm here to assist you, but I don't have personal opinions. How can I help you today?",
+    "\\b(?:what\\sdo\\syou\\sthink|your\\sopinion)\\b": "I don't have personal opinions, but would love to listen to yours. How can I help you today?",
     "\\b(?:favorite\\sactivity|hobby)\\b": "I don't have hobbies, but I'd love to hear about yours! What do you enjoy doing?",
     "\\b(?:your\\sname|what\\sdo\\sI\\scall\\syou)\\b": "You can call me ChatBot! How can I assist you today?",
     "\\b(?:weather\\slike\\stoday|forecast)\\b": "I don't have access to real-time data, but I can chat with you about the weather! What's it like where you are?",
