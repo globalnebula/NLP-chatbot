@@ -96,5 +96,55 @@
     "\\b(?:where\\scan\\s\\w+\\s\\w+)\\b": "I can help you find [place]. What [place] are you looking for?",
     "\\b(?:can\\s\\w+\\s\\w+\\s\\w+\\s\\w+\\sme)\\b": "I can certainly [action]. What [action] are you looking to [action]?",
     "\\b(?:tell\\sme\\sabout\\s\\w+)\\b": "I'd be happy to share information about [topic]. What specific details are you interested in?"
+  },
+  "remedies": {
+    "joy": [
+      "Spread the joy! Share a compliment with someone today.",
+      "Engage in activities that bring you joy and make you laugh.",
+      "Express gratitude for the positive aspects of your life.",
+      "Listen to uplifting music to enhance your joyful mood.",
+      "Take a moment to savor the good things happening around you.",
+      "Connect with friends or loved ones to share your happiness.",
+      "Practice mindfulness and focus on the present moment.",
+      "Indulge in a treat or activity that brings you a sense of joy.",
+      "Celebrate your achievements, no matter how small.",
+      "Find beauty in the simple pleasures of life."
+    ],
+    "sadness": [
+      "Allow yourself to feel and acknowledge your emotions.",
+      "Reach out to a friend or family member for support.",
+      "Engage in activities that bring comfort and solace.",
+      "Write down your thoughts and feelings to release emotional tension.",
+      "Create a self-care routine to nurture your mental well-being.",
+      "Watch a heartwarming movie or read a book that resonates with you.",
+      "Take a walk in nature to clear your mind and uplift your spirits.",
+      "Consider talking to a mental health professional if needed.",
+      "Focus on positive affirmations to shift your mindset.",
+      "Remember that it's okay not to be okay; healing takes time."
+    ],
+    "anger": [
+      "Practice deep breathing exercises to calm your body and mind.",
+      "Engage in physical activity to release built-up tension.",
+      "Express your feelings through writing or art to channel anger.",
+      "Take a break from the situation to gain perspective.",
+      "Use positive affirmations to redirect your thoughts.",
+      "Consider the other person's point of view to promote understanding.",
+      "Seek healthy outlets for frustration, such as talking to a friend.",
+      "Practice forgiveness to release the emotional burden.",
+      "Focus on solutions rather than dwelling on the source of anger.",
+      "Remember that you have the power to choose how you respond."
+    ],
+    "anxiety": [
+      "Practice deep and mindful breathing to alleviate anxiety symptoms.",
+      "Identify and challenge anxious thoughts through self-reflection.",
+      "Create a calming routine or ritual to reduce stress.",
+      "Engage in physical exercise to release tension and boost mood.",
+      "Limit exposure to stressors and create a supportive environment.",
+      "Consider mindfulness meditation to stay present and centered.",
+      "Establish a consistent sleep routine to promote overall well-being.",
+      "Set realistic goals and prioritize tasks to reduce overwhelm.",
+      "Reach out to a trusted friend or professional for support.",
+      "Remember that anxiety is manageable, and you are not alone."
+    ]
   }
 }

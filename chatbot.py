@@ -60,24 +60,20 @@ def load_responses():
     with open('data.json', 'r', encoding="utf-8") as file:
         responses = json.load(file)
     return responses
-def check_patterns(user_input, patterns):
-    # Check for patterns in the user input
-    for pattern, response in patterns.items():
-        if re.search(pattern, user_input, re.IGNORECASE):
-            return response
 
-    # Check for search queries
-    if 'search about' in user_input.lower():
-        query = re.sub(r'search about\s+', '', user_input, flags=re.IGNORECASE)
-        search_results = search(query, num_results=1)
-        try:
-            first_result = next(search_results)
-            return f"Here's what I found: {first_result}"
-        except StopIteration:
-            return "I couldn't find relevant information for that query."
 
-    # No specific pattern found
-    return None
+def get_remedies(emotion):
+    # Define remedies based on emotion
+    remedies = {
+        'joy': ['Take a walk in nature', 'Listen to uplifting music', 'Call a friend and share your joy'],
+        'sadness': ['Reach out to a friend or family member', 'Engage in activities you enjoy', 'Consider talking to a professional'],
+        'anger': ['Practice deep breathing exercises', 'Take a break to cool off', 'Express your feelings through writing'],
+        'neutral': ['Take a moment to relax', 'Engage in a hobby', 'Plan something enjoyable for yourself'],
+        'curiosity': ['Explore a new topic or hobby', 'Read an interesting article', 'Watch a documentary'],
+        'anxiety': ['Practice mindfulness meditation', 'Focus on your breath', 'Create a calming routine']
+    }
+
+    return remedies.get(emotion, [])
 
 def chatbot_response(user_input, responses, model, vectorizer):
     # Check for greetings
@@ -98,10 +94,15 @@ def chatbot_response(user_input, responses, model, vectorizer):
         # Randomly select one response for the predicted emotion
         emotion_responses = responses[emotion]
         selected_response = random.choice(emotion_responses)
+
+        # Get remedies for the emotion
+        remedies = get_remedies(emotion)
+        if remedies:
+            selected_response += f"\n\nRemedies for {emotion.capitalize()}: {', '.join(remedies)}"
+
         return selected_response
     else:
         return "I'm not sure how to respond to that. Can you provide more details?"
-
 
 def start_conversation(responses, model, vectorizer):
     print("Bot: Hello! How can I assist you today?")
@@ -138,4 +139,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
