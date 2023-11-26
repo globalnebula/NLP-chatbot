@@ -51,7 +51,6 @@ class ChatbotUI:
         self.model = model
         self.vectorizer = vectorizer
         self.responses = self.load_responses()
-
         self.window = tk.Tk()
         self.window.title("Chatbot UI")
 
@@ -63,13 +62,12 @@ class ChatbotUI:
         return responses
 
     def create_widgets(self):
-        self.chat_history = scrolledtext.ScrolledText(self.window, width=50, height=20, wrap=tk.WORD)
+        self.chat_history = scrolledtext.ScrolledText(self.window, width=50, height=20, wrap=tk.WORD, fg='white',bg="gray")
         self.chat_history.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
-
         self.user_input_label = tk.Label(self.window, text="User Input:")
         self.user_input_label.grid(row=1, column=0, padx=10, pady=5, sticky=tk.W)
 
-        self.user_input_entry = tk.Entry(self.window, width=40)
+        self.user_input_entry = tk.Entry(self.window, width=40, fg='white',bg="gray")
         self.user_input_entry.grid(row=1, column=1, padx=10, pady=5, sticky=tk.W)
 
         self.send_button = tk.Button(self.window, text="Send", command=self.send_message)
@@ -151,4 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
